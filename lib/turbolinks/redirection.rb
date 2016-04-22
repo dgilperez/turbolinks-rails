@@ -23,7 +23,7 @@ module Turbolinks
     private
       def visit_location_with_turbolinks(location, action)
         visit_options = {
-          action: action.to_s == "advance" ? action : "replace"
+          action: ["advance", "replace", "back"].include?(action.to_s) ? action : "replace"
         }
 
         script = []
