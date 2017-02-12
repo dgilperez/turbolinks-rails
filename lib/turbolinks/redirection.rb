@@ -10,7 +10,13 @@ module Turbolinks
       turbolinks = options.delete(:turbolinks)
 
       super.tap do
-        if turbolinks != false && request.xhr? && !request.get?
+        # Consider turbolinks multipart requests as turbolink-visitable as well.
+        # This is due to limitations of remote multipart forms in Rails:
+        # they are sent as HTML instead of JS.
+        # With this patch we are asuming any multipart form is also remote
+        # (we make sure of that in the app).
+        # if turbolinks != false && request.xhr? && !request.get?
+        if turbolinks != false && (request.xhr? || ((request.post? || request.put? || request.patch?) && request.content_type == 'multipart/form-data')) && !request.get?          visit_location_with_turbolinks(location, turbolinks)
           visit_location_with_turbolinks(location, turbolinks)
         else
           if request.headers["Turbolinks-Referrer"]
