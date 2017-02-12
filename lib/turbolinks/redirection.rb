@@ -15,8 +15,8 @@ module Turbolinks
         # they are sent as HTML instead of JS.
         # With this patch we are asuming any multipart form is also remote
         # (we make sure of that in the app).
-        # if turbolinks != false && request.xhr? && !request.get?
-        if turbolinks != false && (request.xhr? || ((request.post? || request.put? || request.patch?) && request.content_type == 'multipart/form-data')) && !request.get?
+        # if turbolinks != false && (request.xhr? || ((request.post? || request.put? || request.patch?) && request.content_type == 'multipart/form-data')) && !request.get?
+        if turbolinks != false && request.xhr? && !request.get?
           visit_location_with_turbolinks(location, turbolinks)
         else
           if request.headers["Turbolinks-Referrer"]
